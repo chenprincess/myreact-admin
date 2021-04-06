@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './login.less';
 import logo from './images/logo.png';
 
 /* 登录的路由组件 */
 class Login extends Component {
+
+  onFinish = (event) => {
+    console.log(event);
+  };
 
   render() {
     return (
@@ -20,6 +24,7 @@ class Login extends Component {
                 name="normal_login"
                 className="login-form"
                 initialValues={{ remember: true }}
+                onFinish={this.onFinish}
             >
               <Form.Item
                   name="username"
