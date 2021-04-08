@@ -7,8 +7,8 @@ import logo from './images/logo.png';
 /* 登录的路由组件 */
 class Login extends Component {
 
-  onFinish = (event) => {
-    console.log(event);
+  onFinish = (values) => {
+    console.log(values);
   };
 
   render() {
@@ -28,13 +28,25 @@ class Login extends Component {
             >
               <Form.Item
                   name="username"
-                  rules={[{ required: true, message: '请输入用户名!' }]}
+                  rules={[
+                    { required: true, whitespace:true, message: '请输入用户名!' },
+                    { min: 4, message: '用户名长度至少4位!' },
+                    { max: 12, message: '用户名长度至多12位!' }]}
               >
                 <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="用户名" />
               </Form.Item>
+              {/* 密码要求:
+               1.至少4位
+               2.至多12位
+               3.必须是英文、数字或下划线组成*/}
               <Form.Item
                   name="password"
-                  rules={[{ required: true, message: '请输入密码!' }]}
+                  rules={[
+                    { required: true, message: '请输入密码!' },
+                    { min: 4, message: '密码长度至少4位!' },
+                    { max: 12, message: '密码长度至多12位!' },
+                    { pattern: 12, message: '密码必须是英文、数字或下划线组成!' }
+                  ]}
               >
                 <Input
                     prefix={<LockOutlined className="site-form-item-icon" />}
