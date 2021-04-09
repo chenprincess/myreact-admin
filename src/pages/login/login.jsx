@@ -1,14 +1,28 @@
 import React, {Component} from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './login.less';
 import logo from './images/logo.png';
+import {reqLogin} from '../../api';
 
 /* 登录的路由组件 */
 class Login extends Component {
 
   onFinish = (values) => {
-    console.log(values);
+    reqLogin(values).then(res => {
+      const {status, msg} = res;
+      if (status === 0){
+        message.success('登录成功');
+        // 跳转到管理页面
+        this.props.history.replace('/');
+      }else if (status === 1) {
+        message.error(msg);
+      }else {
+        message.error('未知错误，请联系管理员');
+      }
+    }).catch(err => {
+      message.error(err.message);
+    });
   };
 
   render() {
@@ -26,6 +40,7 @@ class Login extends Component {
                 initialValues={{ remember: true }}
                 onFinish={this.onFinish}
             >
+              {/* 声明式验证：直接使用别人定义好的验证规则进行验证 */}
               <Form.Item
                   name="username"
                   rules={[
@@ -42,7 +57,7 @@ class Login extends Component {
               <Form.Item
                   name="password"
                   rules={[
-                    { required: true, message: '请输入密码!' },
+                    { required: true, whitespace:true, message: '请输入密码!' },
                     { min: 4, message: '密码长度至少4位!' },
                     { max: 12, message: '密码长度至多12位!' },
                     { pattern: 12, message: '密码必须是英文、数字或下划线组成!' }
